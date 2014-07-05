@@ -6,7 +6,7 @@ if (!defined('STATUSNET')) {
 
 class TranslateNoticePlugin extends Plugin
 {
-    const VERSION = '0.1';
+    const VERSION = '0.0.1';
 
     public $id;
     public $secret;
