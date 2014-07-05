@@ -27,7 +27,7 @@
         e.preventDefault();
 
         var $this = $(this),
-            text = $this.closest('.notice').find('.e-content').text();
+            text = $this.closest('.notice').find('.e-content').first().text();
 
         translate(text);
     });
