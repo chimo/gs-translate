@@ -89,13 +89,6 @@ class TranslateNoticePlugin extends Plugin
        $action->cssLink($this->path('css/gs-translate.css'));
     }
 
-    /**
-     * Plugin version data
-     *
-     * @param array &$versions array of version data
-     *
-     * @return value
-     */
     function onPluginVersion(&$versions)
     {
         $versions[] = array('name' => 'TranslateNotice',
