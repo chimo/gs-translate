@@ -4,57 +4,16 @@ if (!defined('STATUSNET')) {
     exit(1);
 }
 
+require_once INSTALLDIR . '/plugins/TranslateNotice/lib/BingTranslator.php';
+
 class TranslateNoticePlugin extends Plugin
 {
     const VERSION = '0.0.1';
 
-    public $id;
-    public $secret;
-    public $scope;
-    public $grantType;
+    private $translator;
 
     function initialize() {
-        $this->scope     = 'http://api.microsofttranslator.com/';
-        $this->grantType = 'client_credentials';
-        $this->authUrl   = 'https://datamarket.accesscontrol.windows.net/v2/OAuth2-13';
-    }
-
-    function getAccessToken() {
-        $params = http_build_query(
-            array(
-                'client_id'     => $this->id,
-                'client_secret' => $this->secret,
-                'scope'         => $this->scope,
-                'grant_type'    => $this->grantType
-           )
-        );
-
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, $this->authUrl);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-        $response = curl_exec($ch);
-
-        $errno = curl_errno($ch);
-
-        if ($errno) {
-            $err = curl_error($ch);
-            throw new Exception($err);
-        }
-
-        curl_close($ch);
-
-        $json = json_decode($response);
-
-        if ($json->error) {
-            throw new Exception($json->error_description);
-        }
-
-        return $json->access_token;
+        $this->translator = new BingTranslator($this->client_id, $this->client_secret);
     }
 
     function onEndShowNoticeOptionItems($item) {
@@ -74,7 +33,7 @@ class TranslateNoticePlugin extends Plugin
 
         try {
             // TODO: Set this as cookie?
-            $accessToken = $this->getAccessToken();
+            $accessToken = $this->translator->getAccessToken();
 
             $action->inlineScript('var gsTranslate = {}; gsTranslate.accessToken = "' . $accessToken . '"');
             $action->script($this->path('js/gs-translate.js'));
