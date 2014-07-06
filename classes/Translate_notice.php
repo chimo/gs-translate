@@ -29,6 +29,16 @@ class Translate_notice extends Managed_DataObject {
         return self::getKV('user_id', $userid);
     }
 
+    public static function getTargetLanguage($user) {
+        $tn = self::getByUserId($user->id);
+
+        if (empty($tn)) {
+            return null;
+        } else {
+            return $tn->target_lang;
+        }
+    }
+
     public static function saveTargetLanguage($user, $language) {
         $tn = new Translate_notice();
         $tn->user_id = $user->id;
