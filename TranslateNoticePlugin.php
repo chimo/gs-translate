@@ -61,6 +61,7 @@ class TranslateNoticePlugin extends Plugin
             return;
         }
 
+        // Tell the JS which language we should translate to
         $targetLanguage = Translate_notice::getKV('user_id', common_current_user()->id);
         if ($targetLanguage === false) {
             $targetLanguage = 'en';
@@ -69,6 +70,7 @@ class TranslateNoticePlugin extends Plugin
         }
 
         try {
+            // Pass the access token to the JS
             // TODO: Set this as cookie?
             $accessToken = $this->translator->getAccessToken()->token;
 
