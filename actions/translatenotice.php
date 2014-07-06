@@ -52,8 +52,13 @@ class TranslateNoticeAction extends Action
 
     function showContent() {
         $user = common_current_user();
+
+        // We have form-submitted language in this request.
         if (isset($this->languageCode)) {
-            Translate_notice::saveTargetLanguage($user, $this->languageCode);
+            Translate_notice::saveTargetLanguage($user, $this->languageCode); // Save it to the db
+            $targetLanguage = $this->languageCode; // Language that should be pre-selected in the dropdown
+        } else { // No new language submitted
+            $targetLanguage = Translate_notice::getTargetLanguage($user); // Get language from db. Will be null if never set.
         }
 
         // Get auth info
@@ -73,9 +78,16 @@ class TranslateNoticeAction extends Action
 
         // <select>
         $this->elementStart('select', array('id' => 'gs-trn-languages', 'name' => 'language'));
-        // foreach ($languages as $language) {
         for ($i = 0; $i < count($languages); $i += 1) {
-            $this->element('option', array('value' => $languageCodes[$i]), $languages[$i]);
+            $currLanguageCode = $languageCodes[$i]->__toString();
+            $attributes = array('value' => $currLanguageCode);
+
+            // If this language is the user's target language, have it selected in the dropdown
+            if ($targetLanguage === $currLanguageCode) {
+                $attributes['selected'] = 'selected';
+            }
+
+            $this->element('option', $attributes, $languages[$i]);
         }
         $this->elementEnd('select');
 
