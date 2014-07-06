@@ -1,15 +1,15 @@
 (function () {
     'use strict';
 
-    var token = window.gsTranslate.accessToken,
+    var gsTranslate = window.gsTranslate,
+        token = window.gsTranslate.accessToken,
+        encode = encodeURIComponent,
         translate;
-
 
     translate = function (text) {
         var appId        = 'Bearer ',    // FIXME legacy: http://msdn.microsoft.com/en-us/library/hh454950.aspx
-            to           = 'en',
+            to           = gsTranslate.targetLanguage || 'en',
             callbackName = 'gsTranslate.callback',
-            encode       = encodeURIComponent,
             script;
 
         script = document.createElement('script');
@@ -33,7 +33,7 @@
     });
 
 
-    window.gsTranslate.callback = function (response) {
+    gsTranslate.callback = function (response) {
 //        console.log(response);
         alert(response);
     };
