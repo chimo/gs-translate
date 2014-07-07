@@ -56,6 +56,14 @@ class TranslateNoticePlugin extends Plugin
         return true;
     }
 
+    function onEndAccountSettingsNav($action) {
+        $action->elementStart('li');
+        $action->element('a', array('href' => common_local_url('translatenotice')), 'Translate Notices'); // TODO: TRANS
+        $action->elementEnd('li');
+
+        return true;
+    }
+
     function onEndShowScripts($action) {
         if (!common_logged_in()) {
             return;
