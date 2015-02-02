@@ -1,10 +1,11 @@
-(function () {
+(function (window, $) {
     'use strict';
 
     var gsTranslate = window.gsTranslate,
-        token = window.gsTranslate.accessToken,
         encode = encodeURIComponent,
-        translate;
+        translate,
+        // https://gitorious.org/social/mainline/source/d318b5c10e557c447fc341747f72bf9cd73a6246:lib/action.php#L430
+        installdir = _peopletagAC.replace("/main/peopletagautocomplete", "");
 
     translate = function (text) {
         var appId        = 'Bearer ',    // FIXME legacy: http://msdn.microsoft.com/en-us/library/hh454950.aspx
@@ -14,8 +15,8 @@
 
         script = document.createElement('script');
 
-        script.src = 'http://api.microsofttranslator.com/V2/Ajax.svc/Translate' +
-            '?appId=' + encode(appId) + encode(token) +
+        script.src = '//api.microsofttranslator.com/V2/Ajax.svc/Translate' +
+            '?appId=' + encode(appId) + encode(gsTranslate.accessToken.token) +
             '&to=' + encode(to) +
             '&text=' + encode(text) +
             '&oncomplete=' + encode(callbackName);
@@ -29,12 +30,20 @@
         var $this = $(this),
             text = $this.closest('.notice').find('.e-content').first().text();
 
-        translate(text);
+        if (gsTranslate.accessToken.expires < Date.now()) {
+            // TODO: Error handling
+            $.getJSON(installdir + '/main/translatenotice/renewtoken', function (data) {
+                gsTranslate.accessToken.token = data.token;
+                gsTranslate.accessToken.expires = data.expires;
+
+                translate(text);
+            });
+        } else {
+            translate(text);
+        }
     });
 
-
     gsTranslate.callback = function (response) {
-//        console.log(response);
         alert(response);
     };
-}());
+}(window, jQuery));

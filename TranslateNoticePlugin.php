@@ -26,6 +26,10 @@ class TranslateNoticePlugin extends Plugin
                 include_once $dir . '/actions/' . strtolower(mb_substr($cls, 0, -6)) . '.php';
                 return false;
 
+            case 'RenewtokenAction':
+                include_once $dir . '/actions/' . strtolower(mb_substr($cls, 0, -6)) . '.php';
+                return false;
+
             case 'Translate_notice':
                 include_once $dir . '/classes/' . $cls . '.php';
                 return false;
@@ -39,6 +43,12 @@ class TranslateNoticePlugin extends Plugin
         $m->connect(
             'settings/translatenotice', array(
                 'action' => 'translatenotice'
+                )
+            );
+
+        $m->connect(
+            'main/translatenotice/renewtoken', array(
+                'action' => 'renewtoken'
                 )
             );
 
@@ -80,11 +90,14 @@ class TranslateNoticePlugin extends Plugin
         try {
             // Pass the access token to the JS
             // TODO: Set this as cookie?
-            $accessToken = $this->translator->getAccessToken()->token;
+            $accessToken = $this->translator->getAccessToken();
 
             $action->inlineScript(
                 'var gsTranslate = {};' .
-                'gsTranslate.accessToken = "' . $accessToken . '";' .
+                'gsTranslate.accessToken = {' .
+                    'token: "' . $accessToken->token . '",' .
+                    'expires: "' . $accessToken->expires .
+                '"};' .
                 'gsTranslate.targetLanguage = "' . $targetLanguage . '";'
             );
 

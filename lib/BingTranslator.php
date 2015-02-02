@@ -8,8 +8,8 @@ class AccessToken {
     function AccessToken($token) {
         $this->token = $token;
 
-        if (preg_match('/&ExpiresOn(\d+)&/', $token, $matches)) {
-            $this->expires = $matches[1];
+        if (preg_match('/&ExpiresOn=(\d+)&/', $token, $matches)) {
+            $this->expires = $matches[1] . "000"; // Bing returns seconds, we want milliseconds
         }
     }
 }
