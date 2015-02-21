@@ -1,11 +1,11 @@
 GNU social Translate Notice
 ===========================
 
-When you are logged in, this plugin adds a 'translate' link to each notice.  
-Screenshot: http://code.chromic.org/file/data/avhyek77d2ouyi7c3pkx/PHID-FILE-2zpo3puv6kxzfjgpichg/screenshot_button.png
+When you are logged in, this plugin adds a 'translate' link to each notice:  
+![screenshot: translate button](https://chromic.org/images/code/gs-translate/icon.png "translate button")
 
-Clicking on it translates the notice.  
-Screenshot: http://code.chromic.org/file/data/vzljybhegi4tqao4rpus/PHID-FILE-wq3xtynuibbdyl5sglgb/screenshot_translation.png 
+Clicking on it translates the notice:  
+![screenshot: translated notice](https://chromic.org/images/code/gs-translate/result.png "translated notice")
 
 Configure
 ---------
