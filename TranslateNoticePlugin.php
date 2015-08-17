@@ -1,6 +1,6 @@
 <?php
 
-if (!defined('STATUSNET')) {
+if (!defined('GNUSOCIAL')) {
     exit(1);
 }
 
@@ -47,7 +47,7 @@ class TranslateNoticePlugin extends Plugin
 
     function onEndAccountSettingsNav($action) {
         $action->elementStart('li');
-        $action->element('a', array('href' => common_local_url('translatenotice')), 'Translate Notices'); // TODO: TRANS
+        $action->element('a', array('href' => common_local_url('translatenotice')), 'Translate Notices');
         $action->elementEnd('li');
 
         return true;
