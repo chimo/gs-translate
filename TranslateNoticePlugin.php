@@ -18,27 +18,6 @@ class TranslateNoticePlugin extends Plugin
         return true;
     }
 
-    function onAutoload($cls) {
-        $dir = dirname(__FILE__);
-
-        switch ($cls) {
-            case 'TranslatenoticeAction':
-                include_once $dir . '/actions/' . strtolower(mb_substr($cls, 0, -6)) . '.php';
-                return false;
-
-            case 'RenewtokenAction':
-                include_once $dir . '/actions/' . strtolower(mb_substr($cls, 0, -6)) . '.php';
-                return false;
-
-            case 'Translate_notice':
-                include_once $dir . '/classes/' . $cls . '.php';
-                return false;
-
-            default:
-                return true;
-        }
-    }
-
     function onRouterInitialized($m) {
         $m->connect(
             'settings/translatenotice', array(
