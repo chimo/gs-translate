@@ -10,7 +10,7 @@ class RenewtokenAction extends Action
 {
     function handle($args)
     {
-        StatusNet::setApi(true);
+        GNUsocial::setApi(true);
 
         if (!common_logged_in()) { // Make sure we're logged in
             $this->clientError(_('Not logged in.'));
