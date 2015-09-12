@@ -25,9 +25,13 @@ class RenewtokenAction extends Action
             $this->user = common_current_user();
         }
 
+        // Get plugin settings
+        $plugins = GNUsocial::getActivePlugins();
+        $transl_attrs = $plugins['TranslateNotice'];
+
         // Get auth info
-        $client_id = common_config('translatenotice', 'client_id');
-        $client_secret = common_config('translatenotice', 'client_secret');
+        $client_id = $transl_attrs['client_id'];
+        $client_secret = $transl_attrs['client_secret'];
 
         $translator = new BingTranslator($client_id, $client_secret);
         $accessToken = $translator->getAccessToken();
