@@ -21,13 +21,13 @@ class TranslateNoticePlugin extends Plugin
     function onRouterInitialized($m) {
         $m->connect(
             'settings/translatenotice', array(
-                'action' => 'translatenotice'
+                    'action' => 'translatenoticesettings'
                 )
             );
 
         $m->connect(
             'main/translatenotice/renewtoken', array(
-                'action' => 'renewtoken'
+                    'action' => 'renewtoken'
                 )
             );
 
@@ -47,7 +47,7 @@ class TranslateNoticePlugin extends Plugin
 
     function onEndAccountSettingsNav($action) {
         $action->elementStart('li');
-        $action->element('a', array('href' => common_local_url('translatenotice')), 'Translate Notices');
+        $action->element('a', array('href' => common_local_url('translatenoticesettings')), 'Translate Notices');
         $action->elementEnd('li');
 
         return true;
