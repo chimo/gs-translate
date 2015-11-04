@@ -4,7 +4,7 @@ if (!defined('GNUSOCIAL')) {
     exit(1);
 }
 
-require_once INSTALLDIR . '/plugins/TranslateNotice/lib/BingTranslator.php';
+require_once INSTALLDIR . '/plugins/TranslateNotice/lib/MicrosoftTranslator.php';
 
 class TranslateNoticeSettingsForm extends Form
 {
@@ -40,7 +40,7 @@ class TranslateNoticeSettingsForm extends Form
         $client_secret = common_config('translatenotice', 'client_secret');
 
         // Get supported languages
-        $translator = new BingTranslator($client_id, $client_secret);
+        $translator = new MicrosoftTranslator($client_id, $client_secret);
         $languageCodes = $translator->getLanguagesForTranslate();
         $languageNames = $translator->getLanguageNames($languageCodes);
         $languages = array();

@@ -4,7 +4,7 @@ if (!defined('GNUSOCIAL')) {
     exit(1);
 }
 
-require_once INSTALLDIR . '/plugins/TranslateNotice/lib/BingTranslator.php';
+require_once INSTALLDIR . '/plugins/TranslateNotice/lib/MicrosoftTranslator.php';
 
 class RenewtokenAction extends Action
 {
@@ -33,7 +33,7 @@ class RenewtokenAction extends Action
         $client_id = $transl_attrs['client_id'];
         $client_secret = $transl_attrs['client_secret'];
 
-        $translator = new BingTranslator($client_id, $client_secret);
+        $translator = new MicrosoftTranslator($client_id, $client_secret);
         $accessToken = $translator->getAccessToken();
 
         header('Content-Type: application/json; charset=utf-8');

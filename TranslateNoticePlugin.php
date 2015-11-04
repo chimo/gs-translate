@@ -4,7 +4,7 @@ if (!defined('GNUSOCIAL')) {
     exit(1);
 }
 
-require_once INSTALLDIR . '/plugins/TranslateNotice/lib/BingTranslator.php';
+require_once INSTALLDIR . '/plugins/TranslateNotice/lib/MicrosoftTranslator.php';
 
 class TranslateNoticePlugin extends Plugin
 {
@@ -13,7 +13,7 @@ class TranslateNoticePlugin extends Plugin
     private $translator;
 
     function initialize() {
-        $this->translator = new BingTranslator($this->client_id, $this->client_secret);
+        $this->translator = new MicrosoftTranslator($this->client_id, $this->client_secret);
 
         return true;
     }

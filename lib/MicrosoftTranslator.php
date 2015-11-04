@@ -1,5 +1,5 @@
 <?php
-// Logic specific to Microsoft's Bing Translator
+// Logic specific to Microsoft Translator
 
 class AccessToken {
     public $token;
@@ -9,12 +9,12 @@ class AccessToken {
         $this->token = $token;
 
         if (preg_match('/&ExpiresOn=(\d+)&/', $token, $matches)) {
-            $this->expires = $matches[1] . "000"; // Bing returns seconds, we want milliseconds
+            $this->expires = $matches[1] . "000"; // Seconds to milliseconds
         }
     }
 }
 
-class BingTranslator {
+class MicrosoftTranslator {
     private $client_id;
     private $client_secret;
     private $scope;
@@ -23,7 +23,7 @@ class BingTranslator {
     private $access_token;
 
     // Constructor
-    function BingTranslator($client_id, $client_secret) {
+    function MicrosoftTranslator($client_id, $client_secret) {
         $this->client_id = $client_id;
         $this->client_secret = $client_secret;
 
