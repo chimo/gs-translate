@@ -45,6 +45,16 @@
     } );
 
     gsTranslate.callback = function( response ) {
+        $dialog
+            .closest( ".ui-dialog" )
+            .find( ".ui-dialog-title" ).html(
+            "<a style='text-decoration: none;' href='http://aka.ms/MicrosoftTranslatorAttribution'>" +
+                "Translated by " +
+                "<img style='vertical-align: middle;' src='" + installdir +
+                    "/plugins/TranslateNotice/extlib/MicrosoftTranslator/MSFT_logo_rgb_C-Gray_D.png' alt='Microsoft Translator'>" +
+            "</a>"
+        );
+
         $dialog.text( response ).dialog( "open" );
     };
 }( window, jQuery ) );
