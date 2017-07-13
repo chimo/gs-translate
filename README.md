@@ -1,20 +1,28 @@
 GNU social Translate Notice
 ===========================
 
-When you are logged in, this plugin adds a 'translate' link to each notice:  
-![screenshot: translate button](https://chimo.github.io/gs-translate/screenshot_button.png "translate button")
+Install
+---------
 
-Clicking on it translates the notice:  
-![screenshot: translated notice](https://chimo.github.io/gs-translate/screenshot_translation.png "translated notice")
+1. Navigate to your /local/plugins directory (create it if it doesn't exist)
+2. `git clone https://github.com/chimo/gs-translate.git TranslateNotice`
 
 Configure
 ---------
 
-1. Subscribe to the Microsoft Translator API: https://datamarket.azure.com/dataset/1899a118-d202-492c-aa16-ba21c33c06cb
-2. Register your application on the Azure DataMarket: https://datamarket.azure.com/developer/applications/
-3. Add the following to your GNU social config.php (make sure to replace the 'secret' value with yours):
+1. Get an API key from Yandex: https://tech.yandex.com/keys/get/?service=trnsl
+2. Add the following to your GNU social config.php (make sure to replace the 'api_key' value with yours):
 
     addPlugin('TranslateNotice', array(
-        'id'     => 'gs-translate',
-        'secret' => 'CHANGEME'
+        'api_key'     => 'YOUR_API_KEY'
     ));
+
+Usage
+---------
+
+Users can choose which language they want notices to be translated in by going
+in the "Translate Notices" section of their Settings.
+
+When logged in, users will see a globe icon under each notice. Clicking on it
+should show the notice in the language they selected above.
+
