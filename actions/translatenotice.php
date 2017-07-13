@@ -4,40 +4,45 @@ if (!defined('GNUSOCIAL')) {
     exit(1);
 }
 
-require_once INSTALLDIR . '/plugins/TranslateNotice/lib/MicrosoftTranslator.php';
+require_once INSTALLDIR . '/local/plugins/TranslateNotice/lib/YandexTranslator.php';
 
-class RenewtokenAction extends Action
+class TranslatenoticeAction extends Action
 {
-    function handle($args)
+    function handle()
     {
         GNUsocial::setApi(true);
 
+        $user = common_current_user();
+
         if (!common_logged_in()) { // Make sure we're logged in
             $this->clientError(_('Not logged in.'));
+
             return;
         } else if (!common_is_real_login()) { // Make _really_ sure we're logged in...
             common_set_returnto($this->selfUrl());
-            $user = common_current_user();
+
             if (Event::handle('RedirectToLogin', array($this, $user))) {
                 common_redirect(common_local_url('login'), 303);
             }
-        } else { // k, I think by now we're logged in. For realz.
-            $this->user = common_current_user();
         }
 
         // Get plugin settings
         $plugins = GNUsocial::getActivePlugins();
         $transl_attrs = $plugins['TranslateNotice'];
 
-        // Get auth info
-        $client_id = $transl_attrs['client_id'];
-        $client_secret = $transl_attrs['client_secret'];
+        // Get API key
+        $api_key = $transl_attrs['api_key'];
 
-        $translator = new MicrosoftTranslator($client_id, $client_secret);
-        $accessToken = $translator->getAccessToken();
+        // Params
+        $text = $this->trimmed('text');
+        $target_language = Translate_notice::getTargetLanguage($user);
+
+        $translator = new YandexTranslator($api_key);
+        $results = $translator->translate($text, $target_language);
 
         header('Content-Type: application/json; charset=utf-8');
-        print json_encode($accessToken);
+
+        print $results;
     }
 
     function isReadOnly($args) {

@@ -4,7 +4,7 @@ if (!defined('GNUSOCIAL')) {
     exit(1);
 }
 
-require_once INSTALLDIR . '/plugins/TranslateNotice/lib/MicrosoftTranslator.php';
+require_once INSTALLDIR . '/local/plugins/TranslateNotice/lib/YandexTranslator.php';
 
 class TranslateNoticeSettingsForm extends Form
 {
@@ -33,24 +33,15 @@ class TranslateNoticeSettingsForm extends Form
     {
         $user = common_current_user();
 
-        $targetLanguage = Translate_notice::getTargetLanguage($user); // Get language from db. Will be null if never set.
+        // Get language from db. Will be null if never set.
+        $targetLanguage = Translate_notice::getTargetLanguage($user);
 
         // Get auth info
-        $client_id = common_config('translatenotice', 'client_id');
-        $client_secret = common_config('translatenotice', 'client_secret');
+        $api_key= common_config('translatenotice', 'api_key');
 
         // Get supported languages
-        $translator = new MicrosoftTranslator($client_id, $client_secret);
-        $languageCodes = $translator->getLanguagesForTranslate();
-        $languageNames = $translator->getLanguageNames($languageCodes);
-        $languages = array();
-
-        // Build list of <options>s
-        for ($i = 0; $i < count($languageNames); $i += 1) {
-            $languageCode = $languageCodes[$i]->__toString();
-
-            $languages[$languageCode] = $languageNames[$i];
-        }
+        $translator = new YandexTranslator($api_key);
+        $languages = $translator->getSupportedLanguages();
 
         // Start outputing HTML
         $this->out->elementStart('fieldset');

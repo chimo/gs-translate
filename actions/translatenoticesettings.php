@@ -4,7 +4,7 @@ if (!defined('GNUSOCIAL')) {
     exit(1);
 }
 
-require_once INSTALLDIR . '/plugins/TranslateNotice/lib/MicrosoftTranslator.php';
+require_once INSTALLDIR . '/local/plugins/TranslateNotice/lib/YandexTranslator.php';
 
 class TranslateNoticeSettingsAction extends SettingsAction
 {

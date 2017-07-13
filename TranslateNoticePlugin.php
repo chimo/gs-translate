@@ -4,19 +4,13 @@ if (!defined('GNUSOCIAL')) {
     exit(1);
 }
 
-require_once INSTALLDIR . '/plugins/TranslateNotice/lib/MicrosoftTranslator.php';
+require_once INSTALLDIR . '/local/plugins/TranslateNotice/lib/YandexTranslator.php';
 
 class TranslateNoticePlugin extends Plugin
 {
-    const VERSION = '0.0.1';
+    const VERSION = '0.1.0';
 
     private $translator;
-
-    function initialize() {
-        $this->translator = new MicrosoftTranslator($this->client_id, $this->client_secret);
-
-        return true;
-    }
 
     function onRouterInitialized($m) {
         $m->connect(
@@ -26,8 +20,8 @@ class TranslateNoticePlugin extends Plugin
             );
 
         $m->connect(
-            'main/translatenotice/renewtoken', array(
-                    'action' => 'renewtoken'
+            'main/translatenotice/translatenotice', array(
+                    'action' => 'translatenotice'
                 )
             );
 
@@ -39,7 +33,6 @@ class TranslateNoticePlugin extends Plugin
             return;
         }
 
-        // TODO: server-side fallback
         $item->out->element('a', array('href' =>  '#', 'class' => 'gs-translate'), 'Translate this notice');
 
         return true;
@@ -54,42 +47,17 @@ class TranslateNoticePlugin extends Plugin
     }
 
     function onEndShowScripts($action) {
-        if (!common_logged_in()) {
-            return;
-        }
-
-        // Tell the JS which language we should translate to
-        $targetLanguage = Translate_notice::getKV('user_id', common_current_user()->id);
-        if ($targetLanguage === false) {
-            $targetLanguage = 'en';
-        } else {
-            $targetLanguage = $targetLanguage->target_lang;
-        }
-
-        try {
-            // Pass the access token to the JS
-            // TODO: Set this as cookie?
-            $accessToken = $this->translator->getAccessToken();
-
-            $action->inlineScript(
-                'var gsTranslate = {};' .
-                'gsTranslate.accessToken = {' .
-                    'token: "' . $accessToken->token . '",' .
-                    'expires: "' . $accessToken->expires .
-                '"};' .
-                'gsTranslate.targetLanguage = "' . $targetLanguage . '";'
-            );
-
+        if (common_logged_in()) {
             $action->script($this->path('js/gs-translate.js'));
-        } catch (Exception $e) {
-            $action->inlineScript('// ' . $e->getMessage());
         }
 
         return true;
     }
 
     function onEndShowStyles($action) {
-       $action->cssLink($this->path('css/gs-translate.css'));
+        if (common_logged_in()) {
+            $action->cssLink($this->path('css/gs-translate.css'));
+        }
 
         return true;
     }
@@ -105,7 +73,7 @@ class TranslateNoticePlugin extends Plugin
     {
         $versions[] = array('name' => 'TranslateNotice',
                             'version' => self::VERSION,
-                            'author' => 'Stephane Berube',
+                            'author' => 'chimo',
                             'homepage' => 'https://github.com/chimo/gs-translate',
                             'description' =>
                             // TRANS: Plugin description.
